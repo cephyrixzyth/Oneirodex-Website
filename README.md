@@ -1,21 +1,27 @@
-# Oneirodex Website
+# Oneirodex website
 
-A no-build static landing page for [Oneirodex](https://github.com/chrisjrovira/Oneirodex), with an interactive sample library and real feature walkthroughs.
+Dark, responsive marketing site for [Oneirodex](https://github.com/chrisjrovira/Oneirodex). The page uses real screenshots and the project's real, captioned walkthrough videos. It does not create sample game artwork or pretend to be the app.
 
-## Preview locally
+## Preview
 
-Open `index.html` in a browser, or serve this folder with any static HTTP server, for example:
+Serve this folder with any static HTTP server:
 
 ```sh
 python -m http.server 8000
 ```
 
-Then visit `http://localhost:8000`. The demo library works offline and uses fictional sample titles. The walkthrough posters, videos, and caption tracks stream from the Oneirodex repository on GitHub when selected.
+Open `http://localhost:8000`. The screen gallery uses captured app screens; the feature panels are sourced from the Oneirodex README and user/admin documentation; video cards load the public how-to index and stream clips on demand.
 
-## What's here
+## Live demo
 
-- `index.html` — page structure, sample collection, and video dialog.
-- `styles.css` — dark visual theme, responsive layouts, motion, and reduced-motion support.
-- `script.js` — search, genre/system filters, sorting, title details, favorites, and video playback.
+GitHub Pages serves only this static site. The full Oneirodex demo needs a separate app and database instance. When that isolated service is deployed, set `liveDemoUrl` in the `demo-config` JSON block at the bottom of `index.html` to its public URL. Both demo CTAs will then launch it. Do not point this at a household production server.
 
-There is no analytics, sign-in, API request, or build step on this site.
+## Files
+
+- `index.html` — landing page, authentic screenshot gallery, feature explorer, and video player.
+- `styles.css` — dark-first responsive design, motion, and reduced-motion support.
+- `script.js` — screen switching, feature panels, video search/filter/player, and demo URL wiring.
+- `assets/screenshots/` and `assets/posters/` — captured Oneirodex product imagery.
+- `assets/videos.json` — real video walkthrough catalog from the app repository.
+
+No analytics, sign-in, or app API calls are included on the marketing page.
