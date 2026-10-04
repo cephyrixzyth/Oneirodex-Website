@@ -70,6 +70,8 @@ body { overflow-x: clip; }
 :root[data-site-theme="mono"] { --bg: #101014; --surface: #18181e; --line: rgba(148, 163, 184, .16); --line-strong: rgba(148, 163, 184, .28); --text: #f8fafc; --muted: #94a3b8; --mint: #94a3b8; }
 :root[data-site-theme="sunset"] { --bg: #151108; --surface: #201a0c; --line: rgba(251, 191, 36, .17); --line-strong: rgba(251, 191, 36, .3); --text: #fffbeb; --muted: #fcd34d; --mint: #fbbf24; }
 :root[data-site-theme="ice"] { --bg: #09121c; --surface: #111e2b; --line: rgba(125, 211, 252, .16); --line-strong: rgba(125, 211, 252, .28); --text: #f0f9ff; --muted: #7dd3fc; --mint: #7dd3fc; }
+.theme-media-filters { position: absolute; width: 0; height: 0; overflow: hidden; }
+.theme-accent-media { filter: url(#theme-accent-recolor); }
 .theme-picker { position: relative; z-index: 30; margin-left: auto; margin-right: clamp(12px, 2vw, 28px); color: var(--text); font-size: 11px; }
 .theme-picker summary { display: flex; min-height: 38px; align-items: center; gap: 8px; padding: 0 11px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--muted); list-style: none; cursor: pointer; }
 .theme-picker summary::-webkit-details-marker { display: none; }
