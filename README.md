@@ -1,6 +1,6 @@
 # Oneirodex website
 
-Dark, responsive marketing site for [Oneirodex](https://github.com/cephyrixzyth/Oneirodex). The page uses real screenshots and the project's real, captioned walkthrough videos. It does not create sample game artwork or pretend to be the app.
+Dark, responsive marketing site for [Oneirodex](https://github.com/cephyrixzyth/Oneirodex). The page uses real screenshots and the project's captioned walkthrough videos. The screenshots and videos show the app as it is.
 
 ## Preview
 
@@ -18,11 +18,11 @@ GitHub Pages serves this static site; the isolated, interactive member demo runs
 
 ## Files
 
-- `index.html` — landing page, authentic screenshot gallery, feature explorer, and video player.
-- `styles.css` — dark-first responsive design, motion, and reduced-motion support.
-- `script.js` — screen switching, feature panels, video search/filter/player, and demo URL wiring.
-- `assets/screenshots/` and `assets/posters/` — captured Oneirodex product imagery.
-- `assets/videos.json` — real video walkthrough catalog from the app repository.
+- `index.html`: landing page, screenshot gallery, feature explorer, and video player.
+- `styles.css`: dark responsive design, motion, and reduced-motion support.
+- `script.js`: screen switching, feature panels, video search, filters, player, and demo links.
+- `assets/screenshots/` and `assets/posters/`: screenshots and video posters from Oneirodex.
+- `assets/videos.json`: walkthrough details from the app repository.
 
 ## Analytics
 
