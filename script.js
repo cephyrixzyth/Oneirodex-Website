@@ -81,12 +81,25 @@ const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
 
 const themeOptions = document.querySelector('#theme-options')
 const themePicker = document.querySelector('#theme-picker')
+function updateFavicon(theme) {
+  const favicon = document.querySelector('link[rel="icon"]')
+  const faviconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <rect width="64" height="64" rx="15" fill="${theme.background}"/>
+    <rect x=".75" y=".75" width="62.5" height="62.5" rx="14.25" fill="none" stroke="${theme.accent}" stroke-opacity=".3" stroke-width="1.5"/>
+    <g fill="${theme.accent}">
+      <rect x="12.4" y="17" width="3.2" height="30" rx="1.5"/><rect x="48.4" y="17" width="3.2" height="30" rx="1.5"/><rect x="12.4" y="44.4" width="39.2" height="3.2" rx="1.5"/>
+      <rect x="19.5" y="26.5" width="4.6" height="17.7" rx="1.3" opacity=".78"/><rect x="25" y="22" width="5.4" height="22.2" rx="1.3"/><rect x="31.4" y="24.5" width="4.2" height="19.7" rx="1.3" opacity=".58"/><rect x="36.6" y="20.5" width="5" height="23.7" rx="1.3"/><rect x="42.2" y="23.5" width="4.8" height="20.7" rx="1.3" opacity=".72" transform="rotate(-13 44.6 44.2)"/>
+    </g>
+  </svg>`
+  favicon.href = `data:image/svg+xml,${encodeURIComponent(faviconSvg)}`
+}
 function applySiteTheme(themeId) {
   const theme = siteThemes.find((item) => item.id === themeId) || siteThemes[0]
   document.documentElement.dataset.siteTheme = theme.id
   document.querySelector('#current-theme-name').textContent = theme.name.replace(' (system)', '')
   document.querySelector('#current-theme-swatch').style.setProperty('--theme-swatch', theme.swatch)
   document.querySelector('meta[name="theme-color"]').content = theme.background
+  updateFavicon(theme)
   themeOptions.querySelectorAll('[data-theme-option]').forEach((button) => {
     button.setAttribute('aria-pressed', String(button.dataset.themeOption === theme.id))
   })
