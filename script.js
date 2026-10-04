@@ -59,7 +59,7 @@ const featureGroups = {
 }
 const videoGrid = document.querySelector('#video-grid')
 const videoDialog = document.querySelector('#video-dialog')
-const rawBase = 'https://raw.githubusercontent.com/chrisjrovira/Oneirodex/main/docs/media/video/howto/'
+const rawBase = 'https://raw.githubusercontent.com/cephyrixzyth/Oneirodex/main/docs/media/video/howto/'
 let videoData = []
 let videoFilter = 'all'
 let screenIndex = 0

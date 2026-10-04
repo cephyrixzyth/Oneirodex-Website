@@ -1,6 +1,6 @@
 # Oneirodex website
 
-Dark, responsive marketing site for [Oneirodex](https://github.com/chrisjrovira/Oneirodex). The page uses real screenshots and the project's real, captioned walkthrough videos. It does not create sample game artwork or pretend to be the app.
+Dark, responsive marketing site for [Oneirodex](https://github.com/cephyrixzyth/Oneirodex). The page uses real screenshots and the project's real, captioned walkthrough videos. It does not create sample game artwork or pretend to be the app.
 
 ## Preview
 
@@ -24,4 +24,6 @@ GitHub Pages serves only this static site. The full Oneirodex demo needs a separ
 - `assets/screenshots/` and `assets/posters/` — captured Oneirodex product imagery.
 - `assets/videos.json` — real video walkthrough catalog from the app repository.
 
-No analytics, sign-in, or app API calls are included on the marketing page.
+## Analytics
+
+The public marketing site uses Cloudflare Web Analytics for aggregate page-view and visit metrics. Its site-specific beacon is in the document head; it does not use cookies or require the domain's DNS to move to Cloudflare. The analytics hostname is `oneirodex.com`.
