@@ -60,7 +60,7 @@ const featureGroups = {
 const videoGrid = document.querySelector('#video-grid')
 const videoPlayer = document.querySelector('#walkthrough-player')
 const rawBase = 'https://raw.githubusercontent.com/cephyrixzyth/Oneirodex/main/docs/media/video/howto/'
-const mediaVersion = '20261004-5'
+const mediaVersion = '20261004-6'
 const siteThemes = [
   { id: 'default', name: 'Default (system)', accent: '#2fd67b', swatch: '#2fd67b', background: '#0b0d10' },
   { id: 'aurora', name: 'Arcade Neon', accent: '#22d3ee', swatch: '#22d3ee', background: '#071217' },
