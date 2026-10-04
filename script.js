@@ -60,8 +60,9 @@ const featureGroups = {
 const videoGrid = document.querySelector('#video-grid')
 const videoPlayer = document.querySelector('#walkthrough-player')
 const rawBase = 'https://raw.githubusercontent.com/cephyrixzyth/Oneirodex/main/docs/media/video/howto/'
+const mediaVersion = '20261004-5'
 const siteThemes = [
-  { id: 'default', name: 'Default (system)', accent: '#49e394', swatch: '#49e394', background: '#080a0a' },
+  { id: 'default', name: 'Default (system)', accent: '#2fd67b', swatch: '#2fd67b', background: '#0b0d10' },
   { id: 'aurora', name: 'Arcade Neon', accent: '#22d3ee', swatch: '#22d3ee', background: '#071217' },
   { id: 'ember', name: 'Hot Cabinet', accent: '#f472b6', swatch: '#f472b6', background: '#160b12' },
   { id: 'violet', name: 'Modern Violet', accent: '#a78bfa', swatch: '#a78bfa', background: '#100d1b' },
@@ -107,7 +108,7 @@ function switchScreen(nextIndex, focusTab = false) {
   const panel = document.querySelector('#viewer-panel')
   image.style.opacity = '0'
   window.setTimeout(() => {
-    image.src = `assets/screenshots/${screen.src}`
+    image.src = `assets/screenshots/${screen.src}?v=${mediaVersion}`
     image.alt = screen.alt
     document.querySelector('#screen-caption').textContent = `${screen.title} · ${screen.caption}`
     document.querySelector('#screen-count').innerHTML = `${String(screenIndex + 1).padStart(2, '0')} <i>/</i> ${String(screenList.length).padStart(2, '0')}`
@@ -159,8 +160,8 @@ function setSelectedVideo(clip, autoplay = false) {
   if (!clip) return
   selectedVideoName = clip.name
   videoPlayer.pause()
-  videoPlayer.poster = `${rawBase}${clip.poster}`
-  videoPlayer.innerHTML = `<source src="${rawBase}${clip.file}" type="video/mp4"><track kind="captions" src="${rawBase}${clip.vtt}" srclang="en" label="English" default>`
+  videoPlayer.poster = `${rawBase}${clip.poster}?v=${mediaVersion}`
+  videoPlayer.innerHTML = `<source src="${rawBase}${clip.file}?v=${mediaVersion}" type="video/mp4"><track kind="captions" src="${rawBase}${clip.vtt}?v=${mediaVersion}" srclang="en" label="English" default>`
   videoPlayer.load()
   document.querySelector('#current-video-kicker').textContent = clip.kicker === 'Admins' ? 'ADMIN TOUR' : clip.kicker === 'Members' ? 'MEMBER TOUR' : 'OVERVIEW'
   document.querySelector('#current-video-title').textContent = clip.title
@@ -176,7 +177,7 @@ function renderVideos() {
 }
 async function loadVideos() {
   try {
-    const response = await fetch('assets/videos.json')
+    const response = await fetch(`assets/videos.json?v=${mediaVersion}`)
     if (!response.ok) throw new Error('Walkthrough index unavailable')
     videoData = await response.json()
     if (videoData.length) setSelectedVideo(videoData[0])
