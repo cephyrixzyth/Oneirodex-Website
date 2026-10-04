@@ -153,7 +153,11 @@ videoGrid.addEventListener('click', (event) => {
   videoDialog.querySelector('video').focus({ preventScroll: true })
 })
 videoDialog.addEventListener('close', () => document.querySelector('#video-frame').replaceChildren())
-videoDialog.addEventListener('click', (event) => { if (event.target === videoDialog) videoDialog.close() })
+videoDialog.addEventListener('click', (event) => {
+  const bounds = videoDialog.getBoundingClientRect()
+  const clickedOutside = event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom
+  if (clickedOutside) videoDialog.close()
+})
 document.querySelector('.dialog-close').addEventListener('click', () => videoDialog.close())
 
 const navButton = document.querySelector('.nav-toggle')
