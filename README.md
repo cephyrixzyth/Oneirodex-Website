@@ -14,7 +14,7 @@ Open `http://localhost:8000`. The screen gallery uses captured app screens; the 
 
 ## Live demo
 
-GitHub Pages serves only this static site. The full Oneirodex demo needs a separate app and database instance. When that isolated service is deployed, set `liveDemoUrl` in the `demo-config` JSON block at the bottom of `index.html` to its public URL. Both demo CTAs will then launch it. Do not point this at a household production server.
+GitHub Pages serves this static site; the isolated, interactive member demo runs at [demo.oneirodex.blitz.cloud/demo](https://demo.oneirodex.blitz.cloud/demo) on the free Blitz plan. The demo uses disposable sample data, can cold-start after idle, and may reset on restart or deploy. Both demo CTAs launch the isolated service. Do not point them at a household production server.
 
 ## Files
 
