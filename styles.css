@@ -4,3 +4,21 @@
 html { scrollbar-gutter: stable; overflow-x: clip; }
 body { overflow-x: clip; }
 
+/* Keep the walkthrough index focused on choosing a clip; playback lives in the dialog. */
+.video-grid { grid-template-columns: 1fr; gap: 0; border-top: 1px solid var(--line); }
+.video-card { display: grid; grid-template-columns: 58px minmax(0, 1fr); align-items: center; min-height: 0; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; background: transparent; overflow: visible; transition: none; }
+.video-card:hover { transform: none; border-color: var(--line); }
+.video-poster { display: grid; place-items: center; width: 42px; height: 42px; min-height: 0; aspect-ratio: auto; padding: 0; border: 1px solid var(--line-strong); border-radius: 50%; background: #121a15; }
+.video-poster img, .poster-shade, .poster-duration { display: none; }
+.poster-play { position: static; width: 100%; height: 100%; padding: 0 0 0 2px; transform: none; border: 0; border-radius: 50%; background: transparent; backdrop-filter: none; }
+.video-poster:hover .poster-play { transform: scale(1.08); background: rgba(73, 227, 148, .12); }
+.video-copy { min-width: 0; padding: 15px 0; }
+.video-copy h3 { margin: 4px 0; }
+.video-copy p { min-height: 0; }
+@media (max-width: 700px) {
+  .video-grid { grid-template-columns: 1fr; gap: 0; }
+  .video-card { grid-template-columns: 52px minmax(0, 1fr); min-height: 0; }
+  .video-poster { width: 38px; height: 38px; }
+  .video-copy { padding: 13px 0; }
+}
+
