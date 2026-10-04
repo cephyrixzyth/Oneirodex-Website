@@ -58,12 +58,47 @@ const featureGroups = {
   ]},
 }
 const videoGrid = document.querySelector('#video-grid')
-const videoDialog = document.querySelector('#video-dialog')
+const videoPlayer = document.querySelector('#walkthrough-player')
 const rawBase = 'https://raw.githubusercontent.com/cephyrixzyth/Oneirodex/main/docs/media/video/howto/'
+const siteThemes = [
+  { id: 'default', name: 'Default (system)', accent: '#49e394', swatch: '#49e394', background: '#080a0a' },
+  { id: 'aurora', name: 'Arcade Neon', accent: '#22d3ee', swatch: '#22d3ee', background: '#071217' },
+  { id: 'ember', name: 'Hot Cabinet', accent: '#f472b6', swatch: '#f472b6', background: '#160b12' },
+  { id: 'violet', name: 'Modern Violet', accent: '#a78bfa', swatch: '#a78bfa', background: '#100d1b' },
+  { id: 'forest', name: 'Vector Green', accent: '#4ade80', swatch: '#4ade80', background: '#09130d' },
+  { id: 'ocean', name: 'Modern Ocean', accent: '#3b82f6', swatch: '#3b82f6', background: '#080f1b' },
+  { id: 'rose', name: 'Modern Rose', accent: '#fb7185', swatch: '#fb7185', background: '#160c10' },
+  { id: 'mono', name: 'Modern Mono', accent: '#94a3b8', swatch: '#94a3b8', background: '#101014' },
+  { id: 'sunset', name: 'Coin Gold', accent: '#fbbf24', swatch: '#fbbf24', background: '#151108' },
+  { id: 'ice', name: 'Modern Ice', accent: '#7dd3fc', swatch: '#7dd3fc', background: '#09121c' },
+]
 let videoData = []
 let videoFilter = 'all'
+let selectedVideoName = null
 let screenIndex = 0
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches
+
+const themeOptions = document.querySelector('#theme-options')
+const themePicker = document.querySelector('#theme-picker')
+function applySiteTheme(themeId) {
+  const theme = siteThemes.find((item) => item.id === themeId) || siteThemes[0]
+  document.documentElement.dataset.siteTheme = theme.id
+  document.querySelector('#current-theme-name').textContent = theme.name.replace(' (system)', '')
+  document.querySelector('#current-theme-swatch').style.setProperty('--theme-swatch', theme.swatch)
+  document.querySelector('meta[name="theme-color"]').content = theme.background
+  themeOptions.querySelectorAll('[data-theme-option]').forEach((button) => {
+    button.setAttribute('aria-pressed', String(button.dataset.themeOption === theme.id))
+  })
+  try { localStorage.setItem('oneirodex-site-theme', theme.id) } catch {}
+}
+themeOptions.innerHTML = siteThemes.map((theme) => `<button type="button" class="theme-option" data-theme-option="${theme.id}" aria-pressed="false"><span class="theme-swatch" style="--theme-swatch:${theme.swatch}" aria-hidden="true"></span><span>${theme.name}</span></button>`).join('')
+themeOptions.addEventListener('click', (event) => {
+  const button = event.target.closest('[data-theme-option]')
+  if (!button) return
+  applySiteTheme(button.dataset.themeOption)
+  themePicker.open = false
+})
+applySiteTheme(document.documentElement.dataset.siteTheme)
 
 function switchScreen(nextIndex, focusTab = false) {
   screenIndex = (nextIndex + screenList.length) % screenList.length
@@ -120,10 +155,23 @@ document.querySelectorAll('[data-feature-group]').forEach((button) => button.add
   buttons[next].focus()
 }))
 function formatDuration(seconds) { return `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}` }
+function setSelectedVideo(clip, autoplay = false) {
+  if (!clip) return
+  selectedVideoName = clip.name
+  videoPlayer.pause()
+  videoPlayer.poster = `${rawBase}${clip.poster}`
+  videoPlayer.innerHTML = `<source src="${rawBase}${clip.file}" type="video/mp4"><track kind="captions" src="${rawBase}${clip.vtt}" srclang="en" label="English" default>`
+  videoPlayer.load()
+  document.querySelector('#current-video-kicker').textContent = clip.kicker === 'Admins' ? 'ADMIN TOUR' : clip.kicker === 'Members' ? 'MEMBER TOUR' : 'OVERVIEW'
+  document.querySelector('#current-video-title').textContent = clip.title
+  document.querySelector('#current-video-description').textContent = clip.blurb
+  if (autoplay) videoPlayer.play().catch(() => {})
+}
 function renderVideos() {
   const query = document.querySelector('#video-search').value.trim().toLowerCase()
   const visible = videoData.filter((clip) => (videoFilter === 'all' || clip.kicker === videoFilter) && `${clip.title} ${clip.blurb} ${clip.kicker}`.toLowerCase().includes(query))
-  videoGrid.innerHTML = visible.length ? visible.map((clip) => `<article class="video-card"><button class="video-poster" type="button" data-play-clip="${clip.name}" aria-label="Play ${clip.title}"><img src="assets/posters/poster-${clip.name}.png" alt="Real Oneirodex screen capture: ${clip.title}" loading="lazy" /><span class="poster-shade"></span><span class="poster-play" aria-hidden="true">▶</span><span class="poster-duration">${formatDuration(clip.seconds)}</span></button><div class="video-copy"><span class="video-kicker">${clip.kicker === 'Admins' ? 'ADMIN TOUR' : clip.kicker === 'Members' ? 'MEMBER TOUR' : 'OVERVIEW'}</span><h3>${clip.title}</h3><p>${clip.blurb}</p></div></article>`).join('') : '<p class="empty-videos">No walkthroughs match that search. Try another feature.</p>'
+  if (visible.length && !visible.some((clip) => clip.name === selectedVideoName)) setSelectedVideo(visible[0])
+  videoGrid.innerHTML = visible.length ? visible.map((clip) => `<button class="video-choice${clip.name === selectedVideoName ? ' is-selected' : ''}" type="button" data-play-clip="${clip.name}" aria-pressed="${clip.name === selectedVideoName}"><span class="video-choice-title">${clip.title}</span><span class="video-choice-meta"><span>${clip.kicker === 'Admins' ? 'ADMIN' : clip.kicker === 'Members' ? 'MEMBER' : 'OVERVIEW'}</span><span>${formatDuration(clip.seconds)}</span></span></button>`).join('') : '<p class="empty-videos">No walkthroughs match that search. Try another feature.</p>'
   document.querySelector('#video-total').textContent = videoData.length
 }
 async function loadVideos() {
@@ -131,6 +179,7 @@ async function loadVideos() {
     const response = await fetch('assets/videos.json')
     if (!response.ok) throw new Error('Walkthrough index unavailable')
     videoData = await response.json()
+    if (videoData.length) setSelectedVideo(videoData[0])
     renderVideos()
   } catch {
     videoGrid.innerHTML = '<p class="empty-videos">Walkthroughs are temporarily unavailable. Explore the real screen captures above or visit the project documentation.</p>'
@@ -147,18 +196,9 @@ videoGrid.addEventListener('click', (event) => {
   if (!button) return
   const clip = videoData.find((item) => item.name === button.dataset.playClip)
   if (!clip) return
-  document.querySelector('#dialog-video-title').textContent = clip.title
-  document.querySelector('#video-frame').innerHTML = `<video controls autoplay playsinline preload="none" poster="${rawBase}${clip.poster}"><source src="${rawBase}${clip.file}" type="video/mp4"><track kind="captions" src="${rawBase}${clip.vtt}" srclang="en" label="English" default>Your browser does not support video playback.</video>`
-  videoDialog.showModal()
-  videoDialog.querySelector('video').focus({ preventScroll: true })
+  setSelectedVideo(clip, true)
+  renderVideos()
 })
-videoDialog.addEventListener('close', () => document.querySelector('#video-frame').replaceChildren())
-videoDialog.addEventListener('click', (event) => {
-  const bounds = videoDialog.getBoundingClientRect()
-  const clickedOutside = event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom
-  if (clickedOutside) videoDialog.close()
-})
-document.querySelector('.dialog-close').addEventListener('click', () => videoDialog.close())
 
 const navButton = document.querySelector('.nav-toggle')
 const nav = document.querySelector('#site-nav')
